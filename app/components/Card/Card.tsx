@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import Link from 'next/link';
 import { Post } from '@/redux/features/PostSlice';
-
+//
 const Card: React.FC<Post> = (property) => {
 
   const [currentImage, setCurrentImage] = useState(0)
