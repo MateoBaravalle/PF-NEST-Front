@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../redux/store";
 import { registerUserAsync, setUserStatus } from "../../../redux/features/UserSlice";
 import { validate } from "./validate";
 import Link from "next/link";
-import Cookies from "js-cookie";
 
 const Register: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -20,20 +19,7 @@ const Register: React.FC = () => {
     lastName: "",
   });
 
-  //const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
-  //useEffect(() => {
-    //const router = require("next/router");
-
-    //if (isAuthenticated) {
-      // const redirectTimeout = setTimeout(() => {
-      //   router.default.push("/Views/Login");
-      // }, 3000);
-      // return () => clearTimeout(redirectTimeout);
-    //}
-  //}, [isAuthenticated, dispatch]); 
-
 
   const handleRegister = async () => {
     setErrors(validate(fields));
@@ -44,12 +30,8 @@ const Register: React.FC = () => {
         if (registerUserAsync.fulfilled.match(resultAction)) {
           const cookies = resultAction.payload.cookies;
           const responseData = resultAction.payload.responseData;
-        
-          console.log(responseData);
-          console.log(cookies);
-        
-          dispatch(setUserStatus({ isAuthenticated: true, user: responseData }));        
-          //setRegistrationSuccess(true);
+
+          dispatch(setUserStatus({ isAuthenticated: true, user: responseData }));
         } else if (registerUserAsync.rejected.match(resultAction)) {
           console.error("Error en el registro:", resultAction.error);
         }
@@ -61,52 +43,88 @@ const Register: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const trimmedValue = value.trim();
 
-    setFields({ ...fields, [name]: trimmedValue });
-    setErrors(validate({ ...fields, [name]: trimmedValue }));
+    setFields({ ...fields, [name]: value });
+    setErrors(validate({ ...fields, [name]: value }));
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh" }}>
-      <h1>Autenticación</h1>
-      {isAuthenticated ? (
-        <div>          
-          {/* {registrationSuccess && <p>¡Registro exitoso! Puedes iniciar sesión ahora.</p>} */}
-          <Link href="../../Views/Login">¡Registro exitoso! Puedes iniciar sesión haciendo click aqui</Link>
-        </div>
-      ) : (
-        <form style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '300px', width: '100%' }}>
-          <label>
-            First Name:
-            <input type="text" name="firstName" value={fields.firstName} onChange={handleChange} />
-            {errors.firstName && <p>{errors.firstName}</p>}
-          </label>
-          <label>
-            Last Name:
-            <input type="text" name="lastName" value={fields.lastName} onChange={handleChange} />
-            {errors.lastName && <p>{errors.lastName}</p>}
-          </label>       
-          <label>
-            Username:
-            <input type="text" name="username" value={fields.username} onChange={handleChange} />
-            {errors.username && <p>{errors.username}</p>}
-          </label>
-          <label>
-            Email:
-            <input type="email" name="email" value={fields.email} onChange={handleChange} />
-            {errors.email && <p>{errors.email}</p>}
-          </label>
-          <label>
-            Password:
-            <input type="password" name="password" value={fields.password} onChange={handleChange} />
-            {errors.password && <p>{errors.password}</p>}
-          </label>
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <button type="button" onClick={handleRegister}>Registrarse</button>
+    <div className="bg-white dark:bg-gray-900 h-screen flex justify-center items-center">
+      <div className="w-full max-w-md px-6">
+        <h2 className="text-2xl font-bold text-white sm:text-3xl text-center">Autenticación</h2>
+        {isAuthenticated ? (
+          <div>
+            <p>¡Registro exitoso! Puedes iniciar sesión ahora.</p>
+            <Link href="../../Views/Login">Iniciar Sesión</Link>
           </div>
-        </form>
-      )}      
+        ) : (
+          <form className="space-y-4">
+            <div>
+              <label htmlFor="firstName" className="block text-sm text-gray-600 dark:text-gray-200">First Name</label>
+              <input
+                type="text"
+                name="firstName"
+                value={fields.firstName}
+                onChange={handleChange}
+                className="w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+              />
+              {errors.firstName && <p className="text-red-500">{errors.firstName}</p>}
+            </div>
+            <div>
+              <label htmlFor="lastName" className="block text-sm text-gray-600 dark:text-gray-200">Last Name</label>
+              <input
+                type="text"
+                name="lastName"
+                value={fields.lastName}
+                onChange={handleChange}
+                className="w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+              />
+              {errors.lastName && <p className="text-red-500">{errors.lastName}</p>}
+            </div>
+            <div>
+              <label htmlFor="username" className="block text-sm text-gray-600 dark:text-gray-200">Username</label>
+              <input
+                type="text"
+                name="username"
+                value={fields.username}
+                onChange={handleChange}
+                className="w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+              />
+              {errors.username && <p className="text-red-500">{errors.username}</p>}
+            </div>
+            <div>
+              <label htmlFor="email" className="block text-sm text-gray-600 dark:text-gray-200">Email Address</label>
+              <input
+                type="email"
+                name="email"
+                value={fields.email}
+                onChange={handleChange}
+                className="w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+              />
+              {errors.email && <p className="text-red-500">{errors.email}</p>}
+            </div>
+            <div>
+              <label htmlFor="password" className="block text-sm text-gray-600 dark:text-gray-200">Password</label>
+              <input
+                type="password"
+                name="password"
+                value={fields.password}
+                onChange={handleChange}
+                className="w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-lg dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40"
+              />
+              {errors.password && <p className="text-red-500">{errors.password}</p>}
+            </div>
+            <div>
+              <button
+                onClick={handleRegister}
+                className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:bg-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+              >
+                Registrarse
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
     </div>
   );
 };

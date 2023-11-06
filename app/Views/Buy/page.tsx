@@ -109,7 +109,7 @@ function page() {
           <img src="/Infinity-4.5s-224px.gif" alt="Cargando..." />
         ) : posts && posts.length > 0 ? (
           <div className="flex gap-10 justify-center">
-            <Cards properties={homeState} />
+            <Cards properties={homeState} busqueda={[]} />
           </div>
         ) : (
           <Errors />

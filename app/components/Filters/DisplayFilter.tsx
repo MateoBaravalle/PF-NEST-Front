@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { updateState } from "@/redux/features/GlobalSlice";
@@ -52,24 +51,26 @@ const DisplayFilter: React.FC = () => {
   return (
     <div>
       <div>
-        <label htmlFor="selectedPriceRange">Filtrar por Precio:</label>
+        <label htmlFor="selectedPriceRange" className="text-gray-600">Filtrar por Precio:</label>
         <select
           id="selectedPriceRange"
           value={filters.selectedPriceRange}
           onChange={(e) => handleFilterChange("selectedPriceRange", e.target.value)}
+          className="w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
         >
           <option value="">Selecciona un rango de precio</option>
-        <option value="lessThan1000">Menor que 1000</option>
-        <option value="1000To10000">Entre 1000 y 10000</option>
-        <option value="greaterThan10000">Mayor que 10000</option>
+          <option value="lessThan1000">Menor que 1000</option>
+          <option value="1000To10000">Entre 1000 y 10000</option>
+          <option value="greaterThan10000">Mayor que 10000</option>
         </select>
       </div>
       <div>
-        <label htmlFor="selectedCountry">Filtrar por País:</label>
+        <label htmlFor="selectedCountry" className="text-gray-600">Filtrar por País:</label>
         <select
           id="selectedCountry"
           value={filters.selectedCountry}
           onChange={(e) => handleFilterChange("selectedCountry", e.target.value)}
+          className="w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
         >
           <option value="">Selecciona un país</option>
           {uniqueCountries.map((country) => (
@@ -80,11 +81,12 @@ const DisplayFilter: React.FC = () => {
         </select>
       </div>
       <div>
-        <label htmlFor="selectedCity">Filtrar por Ciudad:</label>
+        <label htmlFor="selectedCity" className="text-gray-600">Filtrar por Ciudad:</label>
         <select
           id="selectedCity"
           value={filters.selectedCity}
           onChange={(e) => handleFilterChange("selectedCity", e.target.value)}
+          className="w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
         >
           <option value="">Selecciona una ciudad</option>
           {uniqueCities.map((city) => (
@@ -94,10 +96,12 @@ const DisplayFilter: React.FC = () => {
           ))}
         </select>
       </div>
-      <div>
-        <button onClick={applyFilters}>Buscar</button>
-        <button onClick={clearFilters}>Limpiar</button>
-      </div>
+      <button className="bg-blue-500 text-white rounded-md p-2 mt-2" onClick={applyFilters}>
+        Buscar
+      </button>
+      <button className="bg-gray-400 text-white rounded-md p-2 ml-2" onClick={clearFilters}>
+        Limpiar
+      </button>
     </div>
   );
 };
