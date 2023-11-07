@@ -13,6 +13,8 @@ const DisplayFilter: React.FC = () => {
     selectedCity: "",
   });
 
+  
+
   const uniquePriceRanges = Array.from(new Set(posts.map((post) => post.priceRange)));
   const uniqueCountries = Array.from(new Set(posts.map((post) => post.country)));
   const uniqueCities = Array.from(new Set(posts.map((post) => post.city)));
